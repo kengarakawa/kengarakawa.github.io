@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>001 - Visualize Data with a Bar Chart</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="main">
+      <h1 id="title">United States GDP</h1>
+    </div>
+
+    <div id="tooltip" class="hidden" data-date="" data-gdp="">
+      tooltip here
+    </div>
+    
+    
+    <div id="avatar">
+      <img src="https://drive.google.com/uc?export=view&id=1sQzos1rQ-JAZNPOB1bx9BVKPiwMXEqep" alt="me">
+    </div>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.2.1/d3.min.js"
+      integrity="sha512-wkduu4oQG74ySorPiSRStC0Zl8rQfjr/Ty6dMvYTmjZw6RS5bferdx8TR7ynxeh79ySEp/benIFFisKofMjPbg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+
+    <script>
+      const displayText = (theDate, theGdp) => {
+        let text = theDate.substr(0, 4)
+
+        switch (theDate.substr(5, 2)) {
+          case "01":
+            text += " - Q1"
+            break
+          case "04":
+            text += " - Q2"
+            break
+          case "07":
+            text += " - Q3"
+            break
+          case "10":
+            text += " - Q4"
+            break
+        }
+
+        let detail = Intl.NumberFormat().format(theGdp)
+
+        text += `\n<br />USD ${detail} billion`
+        return text
+      }
+
+      const loadData = async () => {
+        const url =
+          "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json"
+
+        const response = await fetch(url)
+        const json = await response.json()
+        return json.data
+      }
+
+      const plot = async () => {
+        const dataset = await loadData()
+
+        const w = 900
+        const h = 500
+        const padding = 50
+
+        const barWidth = (w - 2 * padding) / dataset.length
+
+        const years = dataset.map((item) => parseInt(item[0].substr(0, 4)))
+        
+        const max = d3.min(dataset, (d) => d[1])
+
+        const xScale = d3
+          .scaleTime()
+          .domain([
+            new Date(d3.min(dataset, (d) => d[0])),
+            new Date(d3.max(dataset, (d) => d[0])),
+          ])
+          .range([padding, w - padding])
+      
+        const yScale = d3
+          .scaleLinear()
+          .domain([0 , d3.max(dataset, (d) => d[1])])
+          .range([h - padding , padding])
+
+          
+        const xAxis = d3.axisBottom(xScale).tickFormat(d3.timeFormat("%Y"))
+        const yAxis = d3.axisLeft(yScale)
+
+        const svg = d3
+          .select("#main")
+          .append("svg")
+          .attr("width", w)
+          .attr("height", h)
+
+        svg
+          .selectAll("rect")
+          .data(dataset)
+          .enter()
+          .append("rect")
+          .attr("class", "bar")
+          .attr("x", (d, i) => i * barWidth)
+          .attr("y", (d) => yScale(d[1]))          
+          .attr("width", barWidth)
+          .attr("height", (d) => h - padding - yScale(d[1]))
+          
+          .attr("data-date", (d) => d[0])
+          .attr("data-gdp", (d) => d[1])          
+          .attr('transform'  , `translate( ${padding} , 0)`)
+
+        svg
+          .append("g")
+          .attr("id", "x-axis")
+          .attr('transform' , `translate(0 , ${h-padding}) `)
+          .call(xAxis)
+
+        svg
+          .append("g")
+          .attr("id", "y-axis")
+          .attr('transform' , `translate(${padding} , 0) `)
+          .call(yAxis)
+      }
+      let posX, posY
+      document.onmousemove = (e) => {
+        posX = e.clientX
+        posY = e.clientY
+      }
+      const doPlot = async () => {
+        await plot()
+        const tooltip = document.getElementById("tooltip")
+        const barElements = document.querySelectorAll(".bar")
+
+        barElements.forEach((elem) => {
+          elem.addEventListener(
+            "mouseout",
+            () => {
+              tooltip.classList.add("hidden")
+            },
+            false
+          )
+          elem.addEventListener(
+            "mouseover",
+            () => {
+              tooltip.classList.remove("hidden")
+              tooltip.setAttribute("data-date", elem.getAttribute("data-date"))
+              tooltip.setAttribute("data-gdp", elem.getAttribute("data-gdp"))
+              tooltip.innerHTML = displayText(
+                tooltip.getAttribute("data-date"),
+                tooltip.getAttribute("data-gdp")
+              )
+
+              tooltip.style.left = `${posX + 20}px`
+              tooltip.style.top = `${posY + 20}px`
+            },
+            false
+          )
+        })
+      }
+
+      doPlot()
+    </script>
+  </body>
+</html>
