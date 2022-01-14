@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Prompt:wght@300;400;500&family=Source+Sans+Pro&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin:0px;
+    padding:0px;   
+    
+    font-family:'Source Sans Pro' 
+}
+
+
+body {
+    background-color: #1856c7;
+}
+
+.cell { 
+    fill:crimson ;    
+    display:inline-block;
+}
+
+.cell:hover {
+    border:3px solid  blue;
+    fill:pink;
+}
+
+svg {
+    margin:auto;
+}
+.container {
+  width: 1200px !important;
+  
+  align-content: center;
+  justify-self: center;
+  margin: auto;
+  background-color: #FFFFFF;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.75);
+    
+}
+
+#tooltip {
+    position: absolute;
+    min-width: 200px;
+    padding: 10px;
+  
+    background-color: rgb(41, 160, 160);
+    border: 1px solid #000;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.75);
+    font-size: 13px;
+    
+    top : -1000px;
+    left: -1000px;
+    visibility:hidden;
+  }
+
+#avatar,
+#avatar img {
+  width: 100px !important;
+  height: 100px !important;
+}
+#avatar {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.75);
+  border: solid 1px #000;
+  border-radius: 20px;
+  overflow: hidden;
+}
