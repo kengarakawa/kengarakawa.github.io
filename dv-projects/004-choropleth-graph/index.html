@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DV - 004 Choropleth Graph</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <main id="main">
+        <h1 id="title">United States Educational Attainment</h1>
+        <h2 id="description">
+          Percentage of adults age 25 and older with a bachelor's degree or
+          higher (2010-2014)
+        </h2>
+        <div class="canvas-container">
+          
+        </div>
+      </main>
+      
+      
+      <div id="tooltip">
+          Yahoo
+      </div>
+      
+      <div id="avatar">
+        <img src="https://drive.google.com/uc?export=view&id=1sQzos1rQ-JAZNPOB1bx9BVKPiwMXEqep" alt="me">
+      </div>
+    </div>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.3.0/d3.min.js"
+      integrity="sha512-NMhzM2RHzbCRO0s5VPaRC+2bW6nmNXimzC9p5sp2x19M+zzuSJ2T50dEQ7hpHkNjnX1mt8nQg1NNthwRZgsoIg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"
+      integrity="sha256-tHoAPGoNdhIR28YHl9DWLzeRfdwigkH7OCBXMrHXhoM="
+      crossorigin="anonymous"
+    ></script>
+    <script src="choropleth.js"></script>
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+  </body>
+</html>
